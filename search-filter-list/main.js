@@ -36,7 +36,7 @@ const input = document.getElementById('input');
 
 function stringFilter(arr, str) {
   const keyword = str.toLowerCase(); //대소문자 구분 없이
-  return arr.filter((word) => word.includes(keyword));
+  return arr.filter((word) => word.toLowerCase().includes(keyword));
 }
 
 function removeAllChild(parent) {
@@ -68,7 +68,7 @@ function searchFilterList() {
   const inputValue = input.value;
 
   const filteredList = stringFilter(words, inputValue);
-  filteredList.length != 0 ? makeList(filteredList) : noResult();
+  filteredList.length ? makeList(filteredList) : noResult();
 }
 
 makeList(words); //초기 화면 생성
