@@ -9,6 +9,7 @@
 
 const modalStack = [];
 const trigger = document.getElementById('modal-trigger');
+const wrapper = document.getElementById('wapper');
 const body = document.querySelector('body');
 
 function createModalContainer(str) {
@@ -45,6 +46,7 @@ function openModal() {
   body.appendChild(modalContainer);
   createModalCloseButton(modalContainer);
   createModalAcceptButton(modalContainer);
+  wrapper.style.opacity = '80';
 }
 
 function alert() {
