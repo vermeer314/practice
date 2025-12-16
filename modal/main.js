@@ -7,48 +7,78 @@
 
 //모달이 여러개 있을 수 있으니 스택을 사용해서 관리한다
 
-const modalStack = [];
 const trigger = document.getElementById('modal-trigger');
-const wrapper = document.getElementById('wapper');
-const body = document.querySelector('body');
+const body = document.body;
 
-function createModalContainer(str) {
+function createModalContainer(messageText) {
   const modalContainer = document.createElement('div');
   modalContainer.classList.add('modal-container');
-  modalContainer.textContent = str;
-  modalStack.push(modalContainer);
+
+  const message = document.createElement('p');
+  message.textContent = messageText;
+
+  modalContainer.appendChild(message);
 
   return modalContainer;
 }
 
-function closeModal(modalContainer) {
-  body.removeChild(modalContainer);
-}
-function createModalAcceptButton(modalContainer) {
-  const modalAcceptButton = document.createElement('button');
-  modalAcceptButton.classList.add('modal-accept-btn');
-  modalAcceptButton.textContent = 'ACCEPT';
-  modalAcceptButton.addEventListener('click', alert);
-  modalContainer.appendChild(modalAcceptButton);
-}
-function createModalCloseButton(modalContainer) {
-  const modalCloseButton = document.createElement('button');
-  modalCloseButton.classList.add('modal-close-btn');
-  modalCloseButton.textContent = 'CLOSE';
-  modalCloseButton.addEventListener('click', closeModal);
-  modalContainer.appendChild(modalCloseButton);
-}
-function openModal() {
-  //모달 컨테이너 생성
-  //모달 닫기 버튼 생성 후 컨테이너에 넣기
-  //yes, no 버튼 생성 후 컨테이너에 넣기
-  const modalContainer = createModalContainer('동의하십니까?');
-  body.appendChild(modalContainer);
-  createModalCloseButton(modalContainer);
-  createModalAcceptButton(modalContainer);
-  wrapper.style.opacity = '80';
+function createModalOverlay() {
+  const modalOverlay = document.createElement('div');
+  modalOverlay.classList.add('modal-overlay');
+
+  return modalOverlay;
 }
 
-function alert() {
-  console.log('accepted');
+function closeModal(modalOverlay) {
+  modalOverlay?.remove();
+  trigger.focus();
+}
+function createModalButton(text, className, onCLick) {
+  const button = document.createElement('button');
+  button.textContent = text;
+  button.classList.add(className);
+  button.addEventListener('click', onCLick);
+
+  return button;
+}
+
+function openModal() {
+  const modalOverlay = createModalOverlay();
+  body.appendChild(modalOverlay);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.currentTarget === e.target) closeModal(modalOverlay);
+  });
+  const modalContainer = createModalContainer('동의하십니까?');
+  modalOverlay.appendChild(modalContainer);
+
+  const escHandler = (e) => {
+    if (e.key === 'Escape') {
+      closeModal(modalOverlay);
+      document.removeEventListener('keydown', escHandler);
+    }
+  };
+
+  const modalAcceptButton = createModalButton(
+    'ACCEPT',
+    'modal-accept-btn',
+    () => {
+      alertAccept();
+      closeModal(modalOverlay);
+      document.removeEventListener('keydown', escHandler);
+    }
+  );
+
+  const modalCloseButton = createModalButton('CLOSE', 'modal-close-btn', () => {
+    closeModal(modalOverlay);
+    document.removeEventListener('keydown', escHandler);
+  });
+  modalContainer.appendChild(modalAcceptButton);
+  modalAcceptButton.focus();
+  modalContainer.appendChild(modalCloseButton);
+
+  document.addEventListener('keydown', escHandler);
+}
+
+function alertAccept() {
+  alert('동의되었습니다');
 }

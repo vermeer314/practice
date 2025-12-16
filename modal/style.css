@@ -1,4 +1,4 @@
-.modal-backdrop {
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -36,4 +36,9 @@
   font-size: 18px;
   cursor: pointer;
   height: 30px;
+}
+
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
 }
