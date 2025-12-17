@@ -2,11 +2,7 @@
 //모달 창 외의 부분은 흐릿하게 처리한다
 //모달 창 외의 부분을 클릭하거나, esc를 입력할 경우 모달 창이 닫한디
 
-//모달을 미리 만들어 두고 display를 건드릴 것인가
-//아니면 눌렀을 때 동적으로 생성하고, 동적으로 제거할 것인가? (이 방식으로)
-
-//모달이 여러개 있을 수 있으니 스택을 사용해서 관리한다
-
+let isModalOpen = false;
 const trigger = document.getElementById('modal-trigger');
 const body = document.body;
 
@@ -29,11 +25,11 @@ function createModalOverlay() {
   return modalOverlay;
 }
 
-function createModalButton(text, className, onCLick) {
+function createModalButton(text, className, onClick) {
   const button = document.createElement('button');
   button.textContent = text;
   button.classList.add(className);
-  button.addEventListener('click', onCLick);
+  button.addEventListener('click', onClick);
 
   return button;
 }
@@ -44,14 +40,11 @@ function closeModal(modalOverlay) {
 }
 
 function openModal() {
-  const modalOverlay = createModalOverlay();
-  body.appendChild(modalOverlay);
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.currentTarget === e.target) closeModal(modalOverlay);
-  });
+  if (isModalOpen) return;
+  isModalOpen = true;
 
+  const modalOverlay = createModalOverlay();
   const modalContainer = createModalContainer('동의하십니까?');
-  modalOverlay.appendChild(modalContainer);
 
   const escHandler = (e) => {
     if (e.key === 'Escape') close();
@@ -61,6 +54,7 @@ function openModal() {
   function close() {
     closeModal(modalOverlay);
     document.removeEventListener('keydown', escHandler);
+    isModalOpen = false;
   }
 
   const modalAcceptButton = createModalButton(
@@ -75,6 +69,12 @@ function openModal() {
   const modalCloseButton = createModalButton('CLOSE', 'modal-close-btn', () => {
     close();
   });
+
+  body.appendChild(modalOverlay);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.currentTarget === e.target) close();
+  });
+  modalOverlay.appendChild(modalContainer);
 
   modalContainer.appendChild(modalAcceptButton);
   modalContainer.appendChild(modalCloseButton);
