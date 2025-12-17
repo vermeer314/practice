@@ -29,10 +29,6 @@ function createModalOverlay() {
   return modalOverlay;
 }
 
-function closeModal(modalOverlay) {
-  modalOverlay?.remove();
-  trigger.focus();
-}
 function createModalButton(text, className, onCLick) {
   const button = document.createElement('button');
   button.textContent = text;
@@ -42,39 +38,47 @@ function createModalButton(text, className, onCLick) {
   return button;
 }
 
+function closeModal(modalOverlay) {
+  modalOverlay?.remove();
+  trigger.focus();
+}
+
 function openModal() {
   const modalOverlay = createModalOverlay();
   body.appendChild(modalOverlay);
   modalOverlay.addEventListener('click', (e) => {
     if (e.currentTarget === e.target) closeModal(modalOverlay);
   });
+
   const modalContainer = createModalContainer('동의하십니까?');
   modalOverlay.appendChild(modalContainer);
 
   const escHandler = (e) => {
-    if (e.key === 'Escape') {
-      closeModal(modalOverlay);
-      document.removeEventListener('keydown', escHandler);
-    }
+    if (e.key === 'Escape') close();
   };
+
+  //모달 닫기와 이벤트 제거를 바인드
+  function close() {
+    closeModal(modalOverlay);
+    document.removeEventListener('keydown', escHandler);
+  }
 
   const modalAcceptButton = createModalButton(
     'ACCEPT',
     'modal-accept-btn',
     () => {
       alertAccept();
-      closeModal(modalOverlay);
-      document.removeEventListener('keydown', escHandler);
+      close();
     }
   );
 
   const modalCloseButton = createModalButton('CLOSE', 'modal-close-btn', () => {
-    closeModal(modalOverlay);
-    document.removeEventListener('keydown', escHandler);
+    close();
   });
+
   modalContainer.appendChild(modalAcceptButton);
-  modalAcceptButton.focus();
   modalContainer.appendChild(modalCloseButton);
+  modalAcceptButton.focus();
 
   document.addEventListener('keydown', escHandler);
 }
