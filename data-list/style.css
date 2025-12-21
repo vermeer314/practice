@@ -1,0 +1,74 @@
+/* 전체 레이아웃 */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f6f7f9;
+  margin: 0;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 제목 */
+#title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* 로딩 메시지 */
+#loading-message {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 스피너 */
+#loader {
+  display: none;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #4285f4;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  animation: spin 1s linear infinite;
+}
+
+/* 스피너 애니메이션 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 리스트 기본 스타일 제거 */
+#user-list {
+  list-style: none;
+  padding: 0;
+  width: 90%;
+  max-width: 600px;
+}
+
+/* 각 유저 카드 */
+.user-data {
+  background-color: #fff;
+  margin-bottom: 12px;
+  padding: 16px;
+  border-radius: 8px;
+
+  /* 카드 느낌 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  /* 텍스트 가독성 */
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  font-size: 15px;
+}
+
+/* 로딩 또는 에러 시 강조 색상 */
+#loading-message.error {
+  color: red;
+}
