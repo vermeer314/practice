@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f6f7f9;
+  margin: 0;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#todo-wrap {
+  border: 1px solid;
+  width: 50vw;
+  min-height: 50vh;
+}
+
+.todo-item {
+  background-color: #fff;
+  margin: 12px 12px;
+  padding: 16px;
+  border-radius: 8px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.todo-item.completed {
+  background: lightgreen;
+}
+
+#todo-add {
+  background-color: lightgray;
+  border: dashed 3px gray;
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+}
